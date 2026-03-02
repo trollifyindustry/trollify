@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student List</title>
+
+<style>
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* BODY */
+body{
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg,#ffffff,#f3e8ff);
+  color:#4a148c;
+  text-align:center;
+  padding:15px;
+}
+
+/* HEADING */
+h2{
+  color:#6a1b9a;
+  font-size:22px;
+  margin-bottom:15px;
+}
+
+/* SEARCH INPUT */
+#searchInput{
+  width:100%;
+  max-width:500px;
+  padding:10px;
+  border-radius:25px;
+  border:2px solid #ce93d8;
+  outline:none;
+  font-size:14px;
+  transition:0.3s;
+}
+
+#searchInput:focus{
+  border-color:#8e24aa;
+  box-shadow:0 0 8px rgba(142,36,170,0.3);
+}
+
+/* TABLE WRAPPER (Mobile Scroll Fix) */
+table{
+  width:100%;
+  margin:auto;
+  border-collapse:collapse;
+  background:#ffffff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 15px rgba(106,27,154,0.15);
+  font-size:14px;
+}
+
+/* TABLE HEAD */
+th{
+  background:#8e24aa;
+  color:#fff;
+  padding:10px;
+  font-weight:600;
+}
+
+/* TABLE DATA */
+td{
+  padding:8px;
+  border-bottom:1px solid #f3e5f5;
+  color:#4a148c;
+}
+
+tr:hover{
+  background:#f3e5f5;
+  transition:0.3s;
+}
+
+/* BUTTON */
+button{
+  padding:6px 12px;
+  background:#ab47bc;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+  border-radius:20px;
+  font-size:13px;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#6a1b9a;
+  transform:scale(1.05);
+}
+
+/* MOBILE RESPONSIVE */
+@media screen and (max-width:768px){
+
+  body{
+    padding:10px;
+  }
+
+  h2{
+    font-size:18px;
+  }
+
+  table{
+    font-size:12px;
+  }
+
+  th, td{
+    padding:6px;
+  }
+
+  button{
+    padding:5px 8px;
+    font-size:11px;
+  }
+
+}
+</style>
+</head>
+<body>
+
+<h2>Student List Table</h2>
+<br>
+<input 
+  type="text" 
+  id="searchInput" 
+  placeholder="Search Scholar, Roll, Name, Father..." 
+  onkeyup="searchTable()"
+  style="width:60%;padding:8px;border-radius:5px;border:none;"
+>
+<br><br>
+<table>
+<thead>
+<tr>
+<tr>
+<th>Scholar</th>
+<th>Roll</th>
+<th>Name</th>
+<th>Gender</th>
+<th>DOB</th>
+<th>Class</th>
+<th>Father</th>
+<th>Mother</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
+<script>
+
+const API_URL = "https://script.google.com/macros/s/AKfycbwuyx4DF1YPqO3zoSPs-0nrz2TEzztd_H42v-qgzNUmlU_9RpE5Chkk9zJLpAZ-PemWBw/exec?action=getStudents";
+
+let studentsData = [];
+
+// =============================
+// LOAD DATA
+// =============================
+async function loadData() {
+
+  // 1️⃣ Check localStorage first
+  const localData = localStorage.getItem("studentsData");
+
+  if(localData){
+    studentsData = JSON.parse(localData);
+    renderTable(studentsData);
+  }
+
+  // 2️⃣ Fetch fresh data in background
+  try{
+    const res = await fetch(API_URL);
+    const newData = await res.json();
+
+    // Compare old and new data
+    if(JSON.stringify(newData) !== JSON.stringify(studentsData)){
+
+      studentsData = newData;
+
+      localStorage.setItem(
+        "studentsData",
+        JSON.stringify(newData)
+      );
+
+      renderTable(studentsData);
+      console.log("Table Updated from Server");
+    }
+
+  }catch(err){
+    console.log("Background update failed");
+  }
+
+}
+
+// =============================
+// RENDER TABLE
+// =============================
+function renderTable(data){
+
+  const tbody = document.getElementById("tableBody");
+  tbody.innerHTML = "";
+
+  data.forEach(student => {
+
+const row = `
+<tr>
+  <td>${student.scholar}</td>
+  <td>${student.roll}</td>
+  <td>${student.studentName}</td>
+  <td>${student.gender}</td>
+  <td>${formatDate(student.dob)}</td>
+  <td>${student.studentClass || ""}</td>
+  <td>${student.father}</td>
+  <td>${student.mother}</td>
+  <td>
+    <button onclick='editStudent(${JSON.stringify(student)})'>
+      Edit
+    </button>
+  </td>
+</tr>
+`;
+    tbody.innerHTML += row;
+  });
+
+}
+
+// =============================
+// SEARCH FUNCTION
+// =============================
+function searchTable(){
+
+  const searchValue =
+    document.getElementById("searchInput")
+    .value.toLowerCase();
+
+  const filtered = studentsData.filter(student => {
+
+    return (
+      student.scholar.toString().toLowerCase().includes(searchValue) ||
+      student.roll.toString().toLowerCase().includes(searchValue) ||
+      student.studentName.toLowerCase().includes(searchValue) ||
+      student.father.toLowerCase().includes(searchValue) ||
+      student.mother.toLowerCase().includes(searchValue)
+    );
+
+  });
+
+  renderTable(filtered);
+}
+
+// =============================
+// EDIT
+// =============================
+function editStudent(student){
+  const query = new URLSearchParams(student).toString();
+  window.location.href = "form.html?" + query;
+}
+
+// =============================
+// DATE FORMAT
+// =============================
+function formatDate(dateString){
+
+  if(!dateString) return "";
+
+  const date = new Date(dateString);
+
+  const dd = String(date.getDate()).padStart(2,'0');
+  const mm = String(date.getMonth()+1).padStart(2,'0');
+  const yyyy = date.getFullYear();
+
+  return `${dd}-${mm}-${yyyy}`;
+}
+
+// =============================
+// INITIAL LOAD
+// =============================
+loadData();
+
+// =============================
+// AUTO BACKGROUND UPDATE (5 sec)
+// =============================
+setInterval(loadData, 5000);
+
+</script>
+
+</body>
+
+</html>
+
+<!----
+
+const SHEET_ID = "1qmN4OE3u174RHsiuS0rq20jaQH5ufQkrBjHD5rS9ejw";
+const SHEET_NAME = "Sheet2";
+
+function doGet(e) {
+  const action = e.parameter.action;
+
+  if (action === "getStudents") {
+    return ContentService
+      .createTextOutput(JSON.stringify(getStudents()))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "invalid" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getStudents() {
+
+  const sheet = SpreadsheetApp
+    .openById(SHEET_ID)
+    .getSheetByName(SHEET_NAME);
+
+  const data = sheet.getDataRange().getValues();
+  data.shift(); // remove header row
+
+  return data.map((row, index) => ({
+
+    scholar: row[0],
+    roll: row[1],
+    studentName: row[2],
+    gender: row[3],
+    dob: row[4],
+    studentClass: row[5],   // ✅ Class Added
+    father: row[6],
+    mother: row[7],
+    photoUrl: row[8] || ""  // ✅ Photo URL included
+  }));
+
+}
