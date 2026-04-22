@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subscription Plan</title>
+
+<style>
+body {
+    background: #0f172a;
+    color: white;
+    font-family: Arial;
+    padding: 20px;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+select, input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #0f172a;
+    color: white;
+    border: 1px solid #334155;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #22c55e;
+    border: none;
+    margin-top: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.total {
+    margin-top: 15px;
+    font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<h2>Select Plan</h2>
+
+<select id="plan">
+<option value="Basic">Basic</option>
+<option value="Silver">Silver</option>
+<option value="Gold">Gold</option>
+</select>
+
+<input type="number" id="students" placeholder="Number of Students">
+
+<h3>Select Services</h3>
+
+<label><input type="checkbox" value="admit" onchange="calculate()"> Admit Card ₹1</label><br>
+<label><input type="checkbox" value="marksheet" onchange="calculate()"> Marksheet ₹10</label>
+
+<input type="text" id="userId" placeholder="Enter User ID">
+
+<div class="total">Total: ₹<span id="total">0</span></div>
+
+<button onclick="payNow()">Pay Now</button>
+
+</div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+function calculate() {
+    let students = document.getElementById("students").value || 0;
+    let total = 0;
+
+    document.querySelectorAll("input[type=checkbox]:checked").forEach(el => {
+        if (el.value === "admit") total += students * 1;
+        if (el.value === "marksheet") total += students * 10;
+    });
+
+    document.getElementById("total").innerText = total;
+}
+
+function payNow() {
+
+    let amount = document.getElementById("total").innerText * 100;
+    let userId = document.getElementById("userId").value;
+
+    if (!userId) {
+        alert("User ID required");
+        return;
+    }
+
+    var options = {
+        "key": "rzp_live_SgT2z3HNRQRyXW",
+        "amount": amount,
+        "currency": "INR",
+        "name": "Trollify Infotech",
+        "handler": function (response){
+
+            saveData(response.razorpay_payment_id);
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+}
+
+function saveData(paymentId){
+
+    let data = {
+        userId: document.getElementById("userId").value,
+        plan: document.getElementById("plan").value,
+        students: document.getElementById("students").value,
+        services: Array.from(document.querySelectorAll("input[type=checkbox]:checked")).map(el=>el.value).join(","),
+        amount: document.getElementById("total").innerText,
+        paymentId: paymentId
+    };
+
+    fetch("YOUR_GOOGLE_SCRIPT_URL", {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(res => res.text())
+    .then(() => {
+        alert("Payment Successful & Saved!");
+    });
+}
+
+</script>
+
+</body>
+</html>
