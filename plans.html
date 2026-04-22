@@ -1,147 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Subscription Plan</title>
+<meta name="viewport" content="width=device-width">
+<title>Subscription</title>
 
 <style>
-body {
-    background: #0f172a;
-    color: white;
-    font-family: Arial;
-    padding: 20px;
-}
-
-.container {
-    max-width: 400px;
-    margin: auto;
-}
-
-.card {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-select, input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: #0f172a;
-    color: white;
-    border: 1px solid #334155;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background: #22c55e;
-    border: none;
-    margin-top: 15px;
-    color: black;
-    font-weight: bold;
-}
-
-.total {
-    margin-top: 15px;
-    font-size: 18px;
-}
+body{background:#020617;color:white;font-family:sans-serif;padding:20px;}
+.card{background:#1e293b;padding:20px;border-radius:12px;max-width:400px;margin:auto;}
+input,select{width:100%;padding:10px;margin-top:10px;background:#020617;color:white;border:1px solid #334155;}
+.services{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.service{padding:10px;background:#0f172a;border-radius:10px;cursor:pointer;text-align:center;}
+.service.active{background:#9333ea;}
+button{width:100%;padding:12px;margin-top:15px;background:#22c55e;border:none;}
 </style>
 </head>
 
 <body>
 
-<div class="container">
 <div class="card">
 
-<h2>Select Plan</h2>
+<h2>Choose Plan</h2>
 
-<select id="plan">
-<option value="Basic">Basic</option>
-<option value="Silver">Silver</option>
-<option value="Gold">Gold</option>
+<input id="cid" placeholder="Customer ID">
+
+<select id="plan" onchange="calc()">
+<option value="Basic">Basic ₹49/month</option>
+<option value="Purple">Purple Plan</option>
 </select>
 
-<input type="number" id="students" placeholder="Number of Students">
+<input id="students" type="number" placeholder="Students" oninput="calc()">
 
-<h3>Select Services</h3>
+<div id="services" class="services"></div>
 
-<label><input type="checkbox" value="admit" onchange="calculate()"> Admit Card ₹1</label><br>
-<label><input type="checkbox" value="marksheet" onchange="calculate()"> Marksheet ₹10</label>
+<p>Total: ₹<span id="total">0</span></p>
 
-<input type="text" id="userId" placeholder="Enter User ID">
+<button onclick="pay()">Pay Now</button>
 
-<div class="total">Total: ₹<span id="total">0</span></div>
-
-<button onclick="payNow()">Pay Now</button>
-
-</div>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
 
-function calculate() {
-    let students = document.getElementById("students").value || 0;
-    let total = 0;
+const SCRIPT = "https://script.google.com/macros/s/AKfycbzlhie-ZjSeUEBAmYTUtOalT34wFLddIWBXbpobUAYmSBR-1woEghvSHMeLlF6mja1L/exec";
+const KEY = "rzp_test_SgbaNVkd8iQjXE";
 
-    document.querySelectorAll("input[type=checkbox]:checked").forEach(el => {
-        if (el.value === "admit") total += students * 1;
-        if (el.value === "marksheet") total += students * 10;
-    });
+let services = [
+["Image Hosting",0],
+["Student Add",0],
+["Student Update",0],
+["Previous Marksheet",0],
+["Admit Card",1],
+["Marksheet Generate",7],
+["Marksheet Printing",13],
+["Fee Card Generator",5],
+["Dashboard",0],
+["Website Dev",149]
+];
 
-    document.getElementById("total").innerText = total;
+let selected=[];
+
+services.forEach((s,i)=>{
+ document.getElementById("services").innerHTML+=
+ `<div class="service" onclick="toggle(${i})">${s[0]}<br>₹${s[1]}</div>`;
+});
+
+function toggle(i){
+ let el=document.getElementsByClassName("service")[i];
+ el.classList.toggle("active");
+ selected.includes(i)?selected=selected.filter(x=>x!=i):selected.push(i);
+ calc();
 }
 
-function payNow() {
+function calc(){
+ let st = parseInt(document.getElementById("students").value)||0;
+ let plan=document.getElementById("plan").value;
+ let total=0;
 
-    let amount = document.getElementById("total").innerText * 100;
-    let userId = document.getElementById("userId").value;
+ if(plan==="Basic") total+=49;
 
-    if (!userId) {
-        alert("User ID required");
-        return;
-    }
+ selected.forEach(i=>{
+ let p=services[i][1];
+ if(p==149) total+=149;
+ else total+=p*st;
+ });
 
-    var options = {
-        "key": "rzp_live_SgT2z3HNRQRyXW",
-        "amount": amount,
-        "currency": "INR",
-        "name": "Trollify Infotech",
-        "handler": function (response){
-
-            saveData(response.razorpay_payment_id);
-        }
-    };
-
-    var rzp = new Razorpay(options);
-    rzp.open();
+ document.getElementById("total").innerText=total;
 }
 
-function saveData(paymentId){
+function pay(){
+ let id=document.getElementById("cid").value;
+ let total=document.getElementById("total").innerText;
 
-    let data = {
-        userId: document.getElementById("userId").value,
-        plan: document.getElementById("plan").value,
-        students: document.getElementById("students").value,
-        services: Array.from(document.querySelectorAll("input[type=checkbox]:checked")).map(el=>el.value).join(","),
-        amount: document.getElementById("total").innerText,
-        paymentId: paymentId
-    };
+ if(!id) return alert("Enter ID");
+ if(total<=0) return alert("Select service");
 
-    fetch("YOUR_GOOGLE_SCRIPT_URL", {
-        method: "POST",
-        body: JSON.stringify(data)
-    })
-    .then(res => res.text())
-    .then(() => {
-        alert("Payment Successful & Saved!");
-    });
+ new Razorpay({
+ key:KEY,
+ amount:total*100,
+ handler:(res)=>save(res.razorpay_payment_id)
+ }).open();
+}
+
+function save(pid){
+
+ let today=new Date();
+ let expiry=new Date();
+ expiry.setFullYear(today.getFullYear()+1);
+
+ let data={
+ id:cid.value,
+ plan:plan.value,
+ students:students.value,
+ services:selected.map(i=>services[i][0]).join(","),
+ amount:total.innerText,
+ activeDate:today,
+ expiryDate:expiry,
+ paymentId:pid,
+ buyDate:today
+ };
+
+ fetch(SCRIPT,{method:"POST",body:JSON.stringify(data)})
+ .then(()=>alert("Plan Activated"));
+
 }
 
 </script>
-
 </body>
 </html>
