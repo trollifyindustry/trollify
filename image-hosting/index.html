@@ -4,12 +4,15 @@
 <head>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0" />
 
   <title>Trolify Infotech Image Hosting</title>
 
   <!-- FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect"
+    href="https://fonts.googleapis.com">
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
@@ -72,13 +75,13 @@
 
     }
 
-    h1 {
+    h2 {
 
       text-align: center;
 
       margin-bottom: 25px;
 
-      font-size: 35px;
+      font-size: 30px;
 
     }
 
@@ -105,14 +108,6 @@
 
     }
 
-    .drop-area p {
-
-      margin-bottom: 15px;
-
-      font-size: 18px;
-
-    }
-
     button {
 
       border: none;
@@ -122,17 +117,17 @@
           #FF7E5F,
           #FEB47B);
 
-      padding: 14px 28px;
+      padding: 12px 25px;
 
       border-radius: 999px;
 
       color: white;
 
-      font-size: 15px;
-
       cursor: pointer;
 
       transition: .3s;
+
+      font-size: 14px;
 
     }
 
@@ -152,7 +147,7 @@
 
     .form-group {
 
-      margin-top: 18px;
+      margin-top: 15px;
 
     }
 
@@ -174,14 +169,12 @@
 
       color: white;
 
-      font-size: 15px;
-
     }
 
     input::placeholder {
 
       color:
-        rgba(255, 255, 255, 0.6);
+        rgba(255, 255, 255, 0.5);
 
     }
 
@@ -189,13 +182,13 @@
 
       width: 100%;
 
-      max-height: 350px;
+      max-height: 300px;
 
       object-fit: contain;
 
-      border-radius: 20px;
-
       margin-top: 20px;
+
+      border-radius: 20px;
 
       display: none;
 
@@ -253,6 +246,14 @@
 
     }
 
+    .count-box {
+
+      margin-bottom: 20px;
+
+      color: #FEB47B;
+
+    }
+
     .table-wrapper {
 
       overflow-x: auto;
@@ -272,10 +273,10 @@
 
       padding: 15px;
 
-      text-align: left;
-
       border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
+        1px solid rgba(255, 255, 255, 0.1);
+
+      text-align: left;
 
     }
 
@@ -293,21 +294,13 @@
 
     .url-box {
 
-      max-width: 250px;
+      max-width: 220px;
 
       overflow: hidden;
 
       white-space: nowrap;
 
       text-overflow: ellipsis;
-
-    }
-
-    .count-box {
-
-      margin-bottom: 15px;
-
-      color: #FEB47B;
 
     }
 
@@ -318,6 +311,48 @@
       padding: 30px;
 
       color: #bbb;
+
+    }
+
+    .menu-box {
+
+      position: relative;
+
+    }
+
+    .menu {
+
+      display: none;
+
+      position: absolute;
+
+      right: 0;
+
+      top: 40px;
+
+      background: #1f1f1f;
+
+      border-radius: 12px;
+
+      padding: 10px;
+
+      z-index: 999;
+
+      min-width: 140px;
+
+    }
+
+    .menu button {
+
+      width: 100%;
+
+      margin-bottom: 8px;
+
+    }
+
+    .delete-btn {
+
+      background: red;
 
     }
 
@@ -338,12 +373,13 @@
 
   <div class="container">
 
-    <!-- UPLOAD SECTION -->
+    <!-- UPLOAD -->
     <div class="glass">
 
       <h3>Trolify Infotech Image Hosting</h3>
 
-      <div class="drop-area" id="dropArea">
+      <div class="drop-area"
+        id="dropArea">
 
         <input type="file"
           id="imageFile"
@@ -352,8 +388,7 @@
 
         <p>Drag & Drop Image Here</p>
 
-        <button type="button"
-          id="browseBtn">
+        <button id="browseBtn">
 
           Browse Image
 
@@ -396,8 +431,7 @@
 
       </div>
 
-      <button type="button"
-        class="upload-btn"
+      <button class="upload-btn"
         id="uploadBtn">
 
         Upload Image
@@ -449,7 +483,7 @@
               <th>Name</th>
               <th>Preview</th>
               <th>URL</th>
-              <th>Copy</th>
+              <th>Action</th>
               <th>Time</th>
 
             </tr>
@@ -463,7 +497,7 @@
               <td colspan="6"
                 class="empty-box">
 
-                No Images Found
+                Enter ID To View Images
 
               </td>
 
@@ -478,140 +512,104 @@
     </div>
 
   </div>
-<script>
 
-  // ==========================
-  // CHECK LIBRARY
-  // ==========================
+  <script>
 
-  if (typeof window.supabase === "undefined") {
+    // CONFIG
+    const SUPABASE_URL =
+      "https://veyvsbcqhzmescvpbnra.supabase.co";
 
-    Swal.fire({
-      icon: "error",
-      title: "Supabase Library Failed To Load"
-    });
+    const SUPABASE_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZleXZzYmNxaHptZXNjdnBibnJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMDM1NDIsImV4cCI6MjA5NDU3OTU0Mn0.ptRkXx1CP18tVJIKF1PD2KLDXOIIMPo1i_Uf8R7-CCE";
 
-  }
+    const BUCKET_NAME =
+      "images";
 
-  // ==========================
-  // CONFIG
-  // ==========================
+    // CLIENT
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
-  const SUPABASE_URL =
-    "https://veyvsbcqhzmescvpbnra.supabase.co";
+    // ELEMENTS
+    const imageFile =
+      document.getElementById("imageFile");
 
-  const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZleXZzYmNxaHptZXNjdnBibnJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMDM1NDIsImV4cCI6MjA5NDU3OTU0Mn0.ptRkXx1CP18tVJIKF1PD2KLDXOIIMPo1i_Uf8R7-CCE";
+    const browseBtn =
+      document.getElementById("browseBtn");
 
-  const BUCKET_NAME =
-    "images";
+    const preview =
+      document.getElementById("preview");
 
-  // ==========================
-  // CLIENT
-  // ==========================
+    const uploadBtn =
+      document.getElementById("uploadBtn");
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+    const progressBar =
+      document.getElementById("progressBar");
 
-  // ==========================
-  // ELEMENTS
-  // ==========================
+    const progressText =
+      document.getElementById("progressText");
 
-  const imageFile =
-    document.getElementById("imageFile");
+    const dropArea =
+      document.getElementById("dropArea");
 
-  const browseBtn =
-    document.getElementById("browseBtn");
-
-  const preview =
-    document.getElementById("preview");
-
-  const uploadBtn =
-    document.getElementById("uploadBtn");
-
-  const progressBar =
-    document.getElementById("progressBar");
-
-  const progressText =
-    document.getElementById("progressText");
-
-  const dropArea =
-    document.getElementById("dropArea");
-
-  // ==========================
-  // BROWSE
-  // ==========================
-
-  browseBtn.addEventListener(
-    "click",
-    function (e) {
+    // BROWSE
+    browseBtn.onclick = (e) => {
 
       e.stopPropagation();
 
       imageFile.click();
 
-    });
+    };
 
-  // ==========================
-  // DROP AREA
-  // ==========================
-
-  dropArea.addEventListener(
-    "click",
-    function () {
+    // DROP
+    dropArea.onclick = () => {
 
       imageFile.click();
 
-    });
+    };
 
-  dropArea.addEventListener(
-    "dragover",
-    function (e) {
+    dropArea.addEventListener(
+      "dragover",
+      (e) => {
 
-      e.preventDefault();
+        e.preventDefault();
 
-      dropArea.style.borderColor =
-        "#FF7E5F";
+        dropArea.style.borderColor =
+          "#FF7E5F";
 
-    });
+      });
 
-  dropArea.addEventListener(
-    "dragleave",
-    function () {
+    dropArea.addEventListener(
+      "dragleave",
+      () => {
 
-      dropArea.style.borderColor =
-        "rgba(255,255,255,0.2)";
+        dropArea.style.borderColor =
+          "rgba(255,255,255,0.2)";
 
-    });
+      });
 
-  dropArea.addEventListener(
-    "drop",
-    function (e) {
+    dropArea.addEventListener(
+      "drop",
+      (e) => {
 
-      e.preventDefault();
+        e.preventDefault();
 
-      imageFile.files =
-        e.dataTransfer.files;
+        imageFile.files =
+          e.dataTransfer.files;
 
-      showPreview();
+        showPreview();
 
-    });
+      });
 
-  // ==========================
-  // IMAGE PREVIEW
-  // ==========================
+    // PREVIEW
+    imageFile.addEventListener(
+      "change",
+      showPreview
+    );
 
-  imageFile.addEventListener(
-    "change",
-    showPreview
-  );
-
-  function showPreview() {
-
-    try {
+    function showPreview() {
 
       const file =
         imageFile.files[0];
@@ -624,429 +622,363 @@
       preview.style.display =
         "block";
 
-    } catch (err) {
+    }
 
-      Swal.fire({
-        icon: "error",
-        title: err.message
+    // PROGRESS
+    function startProgress() {
+
+      let width = 0;
+
+      const interval =
+        setInterval(() => {
+
+          if (width >= 90) {
+
+            clearInterval(interval);
+
+          } else {
+
+            width++;
+
+            progressBar.style.width =
+              width + "%";
+
+            progressText.innerText =
+              width + "%";
+
+          }
+
+        }, 40);
+
+    }
+
+    // COMPRESS
+    async function compressImage(file) {
+
+      return new Promise((resolve) => {
+
+        const img = new Image();
+
+        img.onload = () => {
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          let width = img.width;
+
+          let height = img.height;
+
+          const maxWidth = 1920;
+
+          if (width > maxWidth) {
+
+            height *=
+              maxWidth / width;
+
+            width = maxWidth;
+
+          }
+
+          canvas.width = width;
+
+          canvas.height = height;
+
+          const ctx =
+            canvas.getContext("2d");
+
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            width,
+            height
+          );
+
+          canvas.toBlob(
+
+            (blob) => {
+
+              resolve(blob);
+
+            },
+
+            "image/jpeg",
+
+            0.7
+
+          );
+
+        };
+
+        img.src =
+          URL.createObjectURL(file);
+
       });
 
     }
 
-  }
-
-  // ==========================
-  // PROGRESS
-  // ==========================
-
-  function startProgress() {
-
-    let width = 0;
-
-    progressBar.style.width =
-      "0%";
-
-    progressText.innerText =
-      "0%";
-
-    const interval =
-      setInterval(() => {
-
-        if (width >= 90) {
-
-          clearInterval(interval);
-
-        } else {
-
-          width++;
-
-          progressBar.style.width =
-            width + "%";
-
-          progressText.innerText =
-            width + "%";
-
-        }
-
-      }, 40);
-
-  }
-
-  // ==========================
-  // COMPRESS IMAGE
-  // ==========================
-
-  async function compressImage(file) {
-
-    return new Promise((resolve) => {
-
-      const img = new Image();
-
-      img.onload = () => {
-
-        const canvas =
-          document.createElement(
-            "canvas"
-          );
-
-        let width = img.width;
-
-        let height = img.height;
-
-        const maxWidth = 1920;
-
-        if (width > maxWidth) {
-
-          height *=
-            maxWidth / width;
-
-          width = maxWidth;
-
-        }
-
-        canvas.width = width;
-
-        canvas.height = height;
-
-        const ctx =
-          canvas.getContext("2d");
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          width,
-          height
-        );
-
-        canvas.toBlob(
-
-          (blob) => {
-
-            resolve(blob);
-
-          },
-
-          "image/jpeg",
-
-          0.7
-
-        );
-
-      };
-
-      img.src =
-        URL.createObjectURL(file);
-
-    });
-
-  }
-
-  // ==========================
-  // UPLOAD
-  // ==========================
-
-  uploadBtn.addEventListener(
-    "click",
-    async function () {
-
-      try {
-
-        const file =
-          imageFile.files[0];
-
-        const userId =
-          document
-          .getElementById("userId")
-          .value
-          .trim();
-
-        const imageName =
-          document
-          .getElementById("imageName")
-          .value
-          .trim();
-
-        const quality =
-          document
-          .getElementById("quality")
-          .value;
-
-        // VALIDATION
-        if (!file) {
-
-          Swal.fire({
-            icon: "warning",
-            title: "Please Select Image"
-          });
-
-          return;
-
-        }
-
-        if (!userId) {
-
-          Swal.fire({
-            icon: "warning",
-            title: "Please Enter ID"
-          });
-
-          return;
-
-        }
-
-        if (!imageName) {
-
-          Swal.fire({
-            icon: "warning",
-            title: "Please Enter Image Name"
-          });
-
-          return;
-
-        }
-
-        startProgress();
-
-        Swal.fire({
-
-          title: "Uploading...",
-
-          text: "Please Wait",
-
-          allowOutsideClick: false,
-
-          didOpen: () => {
-
-            Swal.showLoading();
+    // UPLOAD
+    uploadBtn.addEventListener(
+      "click",
+      async () => {
+
+        try {
+
+          const file =
+            imageFile.files[0];
+
+          const userId =
+            document
+            .getElementById("userId")
+            .value
+            .trim();
+
+          const imageName =
+            document
+            .getElementById("imageName")
+            .value
+            .trim();
+
+          const quality =
+            document
+            .getElementById("quality")
+            .value;
+
+          if (!file) {
+
+            return Swal.fire({
+              icon: "warning",
+              title: "Select Image"
+            });
 
           }
 
-        });
+          if (!userId) {
 
-        // FINAL FILE
-        let finalFile = file;
+            return Swal.fire({
+              icon: "warning",
+              title: "Enter ID"
+            });
 
-        if (quality === "low") {
+          }
 
-          finalFile =
-            await compressImage(file);
+          if (!imageName) {
+
+            return Swal.fire({
+              icon: "warning",
+              title: "Enter Image Name"
+            });
+
+          }
+
+          startProgress();
+
+          Swal.fire({
+
+            title: "Uploading...",
+
+            allowOutsideClick: false,
+
+            didOpen: () => {
+
+              Swal.showLoading();
+
+            }
+
+          });
+
+          let finalFile = file;
+
+          if (quality === "low") {
+
+            finalFile =
+              await compressImage(file);
+
+          }
+
+          const fileName =
+            Date.now() +
+            "_" +
+            imageName +
+            ".jpg";
+
+          // STORAGE
+          const { error } =
+            await supabaseClient
+              .storage
+              .from(BUCKET_NAME)
+              .upload(
+                fileName,
+                finalFile
+              );
+
+          if (error) {
+
+            throw error;
+
+          }
+
+          // URL
+          const imageUrl =
+            supabaseClient
+              .storage
+              .from(BUCKET_NAME)
+              .getPublicUrl(
+                fileName
+              )
+              .data
+              .publicUrl;
+
+          // DB
+          const {
+            error: dbError
+          } =
+            await supabaseClient
+              .from("images")
+              .insert([
+                {
+                  id: userId,
+                  name: imageName,
+                  image_url: imageUrl,
+                  created_at:
+                    new Date()
+                    .toLocaleString()
+                }
+              ]);
+
+          if (dbError) {
+
+            throw dbError;
+
+          }
+
+          progressBar.style.width =
+            "100%";
+
+          progressText.innerText =
+            "100%";
+
+          navigator.clipboard.writeText(
+            imageUrl
+          );
+
+          Swal.fire({
+            icon: "success",
+            title: "Upload Successful",
+            text: "URL Copied"
+          });
+
+          document
+            .getElementById("filterId")
+            .value = userId;
+
+          imageFile.value = "";
+
+          preview.style.display =
+            "none";
+
+          document
+            .getElementById("imageName")
+            .value = "";
+
+          loadTable();
+
+        } catch (err) {
+
+          console.log(err);
+
+          Swal.fire({
+            icon: "error",
+            title: err.message
+          });
 
         }
 
-        // FILE NAME
-        const fileName =
-          Date.now() +
-          "_" +
-          imageName +
-          ".jpg";
+      });
 
-        // UPLOAD STORAGE
-        const { error } =
-          await supabaseClient
-            .storage
-            .from(BUCKET_NAME)
-            .upload(
-              fileName,
-              finalFile
-            );
+    // LOAD TABLE
+    async function loadTable() {
 
+      try {
+
+        const tbody =
+          document.getElementById(
+            "tableBody"
+          );
+
+        const filterId =
+          document.getElementById(
+            "filterId"
+          )
+          .value
+          .trim();
+
+        if (!filterId) {
+
+          tbody.innerHTML = `
+          <tr>
+          <td colspan="6"
+          class="empty-box">
+
+          Enter ID To View Images
+
+          </td>
+          </tr>
+          `;
+
+          document
+            .getElementById("countBox")
+            .innerText =
+            "Total Images: 0";
+
+          return;
+
+        }
+
+        tbody.innerHTML = `
+        <tr>
+        <td colspan="6"
+        class="empty-box">
+
+        Loading...
+
+        </td>
+        </tr>
+        `;
+
+const {
+  data,
+  error
+}
+=
+await supabaseClient
+  .from("images")
+  .select("*")
+  .eq("id", filterId);
+         
         if (error) {
 
           throw error;
 
         }
 
-        // PUBLIC URL
-        const publicUrlData =
-          supabaseClient
-            .storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(
-              fileName
-            );
-
-        const imageUrl =
-          publicUrlData
-            .data
-            .publicUrl;
-
-        // SAVE DATABASE
-        const {
-          error: dbError
-        } =
-          await supabaseClient
-            .from("images")
-            .insert([
-              {
-                id: userId,
-                name: imageName,
-                image_url: imageUrl,
-                created_at:
-                  new Date()
-                  .toLocaleString()
-              }
-            ]);
-
-        if (dbError) {
-
-          throw dbError;
-
-        }
-
-        // COMPLETE
-        progressBar.style.width =
-          "100%";
-
-        progressText.innerText =
-          "100%";
-
-        // COPY URL
-        navigator.clipboard.writeText(
-          imageUrl
-        );
-
-        Swal.fire({
-          icon: "success",
-          title: "Upload Successful",
-          text: "Image URL Copied"
-        });
-
-        // AUTO SEARCH SAME ID
-        document
-          .getElementById("filterId")
-          .value = userId;
-
-        // RESET
-        imageFile.value = "";
-
-        preview.style.display =
-          "none";
-
-        document
-          .getElementById("imageName")
-          .value = "";
-
-        // RELOAD TABLE
-        loadTable();
+        renderTable(data);
 
       } catch (err) {
 
         console.log(err);
 
-        Swal.fire({
-          icon: "error",
-          title: "Upload Failed",
-          text: err.message
-        });
-
       }
-
-    });
-
-  // ==========================
-  // LOAD TABLE
-  // ==========================
-
-  async function loadTable() {
-
-    try {
-
-      const tbody =
-        document
-        .getElementById(
-          "tableBody"
-        );
-
-      const filterId =
-        document
-        .getElementById(
-          "filterId"
-        )
-        .value
-        .trim();
-
-      // EMPTY STATE
-      if (!filterId) {
-
-        tbody.innerHTML = `
-        <tr>
-          <td colspan="6"
-            class="empty-box">
-
-            Enter ID To View Images
-
-          </td>
-        </tr>
-        `;
-
-        document
-          .getElementById("countBox")
-          .innerText =
-          "Total Images: 0";
-
-        return;
-
-      }
-
-      tbody.innerHTML = `
-      <tr>
-        <td colspan="6"
-          class="empty-box">
-          Loading...
-        </td>
-      </tr>
-      `;
-
-      // FILTER BY ID
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("images")
-          .select("*")
-          .eq("id", filterId)
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-      if (error) {
-
-        throw error;
-
-      }
-
-      renderTable(data);
-
-    } catch (err) {
-
-      console.log(err);
-
-      Swal.fire({
-        icon: "error",
-        title: "Table Load Failed",
-        text: err.message
-      });
 
     }
 
-  }
-
-  // ==========================
-  // RENDER TABLE
-  // ==========================
-
-  function renderTable(data) {
-
-    try {
+    // RENDER
+    function renderTable(data) {
 
       const tbody =
-        document
-        .getElementById(
+        document.getElementById(
           "tableBody"
         );
 
@@ -1061,40 +993,27 @@
       const filtered =
         data.filter((item) => {
 
-          const name =
-            item.name || "";
-
-          return (
-
-            name
+          return item.name
             .toLowerCase()
-            .includes(search)
-
-          );
+            .includes(search);
 
         });
 
-      // COUNT
       document
-        .getElementById(
-          "countBox"
-        )
+        .getElementById("countBox")
         .innerText =
         `Total Images: ${filtered.length}`;
 
-      // EMPTY
-      if (
-        filtered.length === 0
-      ) {
+      if (!filtered.length) {
 
         tbody.innerHTML = `
         <tr>
-          <td colspan="6"
-            class="empty-box">
+        <td colspan="6"
+        class="empty-box">
 
-            No Images Found
+        No Images Found
 
-          </td>
+        </td>
         </tr>
         `;
 
@@ -1102,106 +1021,224 @@
 
       }
 
-      // TABLE
       tbody.innerHTML =
         filtered.map(
           (item, index) => `
 
         <tr>
 
-          <td>${index + 1}</td>
+        <td>${index + 1}</td>
 
-          <td>${item.name}</td>
+        <td>${item.name}</td>
 
-          <td>
-            <img
-              src="${item.image_url}">
-          </td>
+        <td>
+        <img src="${item.image_url}">
+        </td>
 
-          <td class="url-box">
-            ${item.image_url}
-          </td>
+        <td class="url-box">
+        ${item.image_url}
+        </td>
 
-          <td>
+        <td>
 
-            <button
-              onclick="copyUrl('${item.image_url}')">
+        <div class="menu-box">
 
-              Copy
+        <button
+        onclick="toggleMenu(${item.sr})">
 
-            </button>
+        ⋮
 
-          </td>
+        </button>
 
-          <td>
-            ${item.created_at}
-          </td>
+        <div
+        class="menu"
+        id="menu-${item.sr}">
+
+        <button
+        onclick="copyUrl('${item.image_url}')">
+
+        Copy URL
+
+        </button>
+
+        <button
+        class="delete-btn"
+        onclick="deleteImage(
+        ${item.sr},
+        '${item.image_url}'
+        )">
+
+        Delete
+
+        </button>
+
+        </div>
+
+        </div>
+
+        </td>
+
+        <td>
+        ${item.created_at}
+        </td>
 
         </tr>
 
       `
         ).join("");
 
-    } catch (err) {
+    }
+
+    // MENU
+    function toggleMenu(id) {
+
+      const menu =
+        document.getElementById(
+          `menu-${id}`
+        );
+
+      document
+        .querySelectorAll(".menu")
+        .forEach((m) => {
+
+          if (m !== menu) {
+
+            m.style.display =
+              "none";
+
+          }
+
+        });
+
+      menu.style.display =
+        menu.style.display === "block"
+        ? "none"
+        : "block";
+
+    }
+
+    // COPY
+    function copyUrl(url) {
+
+      navigator.clipboard.writeText(
+        url
+      );
 
       Swal.fire({
-        icon: "error",
-        title: err.message
+        icon: "success",
+        title: "Copied",
+        timer: 1200,
+        showConfirmButton: false
       });
 
     }
 
-  }
+    // DELETE
+    async function deleteImage(
+      sr,
+      imageUrl
+    ) {
 
-  // ==========================
-  // COPY URL
-  // ==========================
+      try {
 
-  function copyUrl(url) {
+        const confirm =
+          await Swal.fire({
 
-    navigator.clipboard.writeText(
-      url
-    );
+            title:
+              "Delete Photo?",
 
-    Swal.fire({
-      icon: "success",
-      title: "Copied Successfully",
-      timer: 1200,
-      showConfirmButton: false
-    });
+            icon:
+              "warning",
 
-  }
+            showCancelButton:
+              true,
 
-  // ==========================
-  // SEARCH
-  // ==========================
+            confirmButtonText:
+              "Delete"
 
-  document
-    .getElementById(
-      "searchInput"
-    )
-    .addEventListener(
-      "input",
-      loadTable
-    );
+          });
 
-  document
-    .getElementById(
-      "filterId"
-    )
-    .addEventListener(
-      "input",
-      loadTable
-    );
+        if (!confirm.isConfirmed) {
 
-  // ==========================
-  // INITIAL LOAD
-  // ==========================
+          return;
 
-  loadTable();
+        }
 
-</script>
+        const fileName =
+          imageUrl
+          .split("/")
+          .pop();
+
+        // STORAGE DELETE
+        const {
+          error: storageError
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET_NAME)
+            .remove([fileName]);
+
+        if (storageError) {
+
+          throw storageError;
+
+        }
+
+        // DB DELETE
+        const {
+          error: dbError
+        } =
+          await supabaseClient
+            .from("images")
+            .delete()
+            .eq("sr", sr);
+
+        if (dbError) {
+
+          throw dbError;
+
+        }
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted"
+        });
+
+        loadTable();
+
+      } catch (err) {
+
+        console.log(err);
+
+        Swal.fire({
+          icon: "error",
+          title: err.message
+        });
+
+      }
+
+    }
+
+    // SEARCH
+    document
+      .getElementById("searchInput")
+      .addEventListener(
+        "input",
+        loadTable
+      );
+
+    document
+      .getElementById("filterId")
+      .addEventListener(
+        "input",
+        loadTable
+      );
+
+    // INITIAL
+    loadTable();
+
+  </script>
+
 </body>
 
 </html>
- 
