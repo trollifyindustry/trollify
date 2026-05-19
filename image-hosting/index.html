@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0" />
+
+  <title>Trolify Image Hosting</title>
+
+  <!-- FONT -->
+  <link rel="preconnect"
+    href="https://fonts.googleapis.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- SWEET ALERT -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- RAZORPAY -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- SUPABASE -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet"
+    href="css/style.css">
+
+</head>
+
+<body>
+
+  <div class="main-container">
+
+    <!-- TOP BAR -->
+    <div class="top-bar glass">
+
+      <div>
+        <h1>Trolify Image Hosting</h1>
+        <p>Premium Upload Dashboard</p>
+      </div>
+            <a href="wallet.html"
+                    <div class="token-box"
+                    id="tokenBox">
+
+                        Tokens : 0
+
+                </div>    
+            </a>
+    </div>
+
+    <!-- UPLOAD SECTION -->
+    <div class="glass upload-card">
+
+      <h2>Upload Image</h2>
+
+      <div class="drop-area"
+        id="dropArea">
+
+        <input type="file"
+          hidden
+          id="imageFile"
+          accept="image/*">
+
+        <h3>Drag & Drop Image</h3>
+
+        <p>or click to browse</p>
+
+      </div>
+
+      <img id="preview"
+        class="preview">
+
+      <div class="input-group">
+
+        <input type="text"
+          id="userId"
+          placeholder="Enter User ID">
+
+      </div>
+
+      <div class="input-group">
+
+        <input type="text"
+          id="imageName"
+          placeholder="Enter Image Name">
+
+      </div>
+
+      <div class="input-group">
+
+        <select id="quality">
+
+          <option value="original">
+            Original Quality
+          </option>
+
+          <option value="low">
+            Low Quality
+          </option>
+
+        </select>
+
+      </div>
+
+      <button id="uploadBtn"
+        class="primary-btn">
+
+        Upload Image
+
+      </button>
+
+      <div class="progress-box">
+
+        <div class="progress-bar"
+          id="progressBar"></div>
+
+      </div>
+
+      <div class="progress-text"
+        id="progressText">
+
+        0%
+
+      </div>
+
+    </div>
+
+    <!------------ TOKEN SECTION --------------------
+    <div class="glass token-card">
+
+      <h2>Buy Upload Tokens</h2>
+
+      <div class="token-grid">
+
+        <button onclick="buyTokens(1)">
+          ₹1 = 2 Uploads
+        </button>
+
+        <button onclick="buyTokens(20)">
+          ₹20 = 40 Uploads
+        </button>
+
+        <button onclick="buyTokens(50)">
+          ₹50 = 100 Uploads
+        </button>
+
+      </div>
+
+    </div> 
+     -------------------end------------------->
+
+    <!-- SEARCH -->
+    <div class="glass search-card">
+
+      <input type="text"
+        id="searchInput"
+        placeholder="Search Image Name">
+
+      <input type="text"
+        id="filterId"
+        placeholder="Search By User ID">
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="glass table-card">
+
+      <div class="table-top">
+
+        <h2>Uploaded Images</h2>
+
+        <div id="countBox">
+          Total Images : 0
+        </div>
+
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>#</th>
+              <th>Name</th>
+              <th>Preview</th>
+              <th>URL</th>
+              <th>Action</th>
+              <th>Time</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="tableBody">
+
+            <tr>
+
+              <td colspan="6"
+                class="empty-box">
+
+                No Images Found
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JS FILES -->
+  <script src="js/config.js"></script>
+  <script src="js/tokens.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/table.js"></script>
+  <script src="js/delete.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>

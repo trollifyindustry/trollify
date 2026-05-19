@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0" />
+
+  <title>
+    Wallet Dashboard
+  </title>
+
+  <!-- FONT -->
+  <link rel="preconnect"
+    href="https://fonts.googleapis.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- SWEET ALERT -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- SUPABASE -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <!-- RAZORPAY -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet"
+    href="css/wallet.css">
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- TOPBAR -->
+    <div class="topbar glass">
+
+      <h2>
+        Wallet Dashboard
+      </h2>
+
+      <a href="index.html">
+
+        <button>
+
+          Upload Panel
+
+        </button>
+
+      </a>
+
+    </div>
+
+    <!-- USER ID -->
+    <div class="glass card">
+
+      <h3>
+        Enter User ID
+      </h3>
+
+      <input type="text"
+        id="userId"
+        placeholder="Enter User ID">
+
+    </div>
+
+    <!-- TOKEN CARD -->
+    <div class="glass token-card">
+
+      <h1 id="tokenBalance">
+
+        0
+
+      </h1>
+
+      <p>
+        Available Tokens
+      </p>
+
+    </div>
+
+    <!-- PLANS -->
+    <div class="plans">
+
+      <!-- PLAN -->
+      <div class="glass plan">
+
+        <h2>
+          ₹1
+        </h2>
+
+        <p>
+          2 Tokens
+        </p>
+
+        <button onclick="buyTokens(1,2)">
+
+          Buy Now
+
+        </button>
+
+      </div>
+
+
+      <!-- PLAN -->
+      <div class="glass plan">
+
+        <h2>
+          ₹10
+        </h2>
+
+        <p>
+          20 Tokens
+        </p>
+
+        <button onclick="buyTokens(10,20)">
+
+          Buy Now
+
+        </button>
+
+      </div>
+
+      <!-- PLAN -->
+      <div class="glass plan">
+
+        <h2>
+          ₹50
+        </h2>
+
+        <p>
+          120 Tokens
+        </p>
+
+        <button onclick="buyTokens(50,120)">
+
+          Buy Now
+
+        </button>
+
+      </div>
+
+      <!-- PLAN -->
+      <div class="glass plan">
+
+        <h2>
+          ₹100
+        </h2>
+
+        <p>
+          250 Tokens
+        </p>
+
+        <button onclick="buyTokens(100,250)">
+
+          Buy Now
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- HISTORY -->
+    <div class="glass history">
+
+      <h3>
+        Transaction History
+      </h3>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>#</th>
+
+              <th>Payment ID</th>
+
+              <th>Amount</th>
+
+              <th>Tokens</th>
+
+              <th>Date</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="historyTable">
+
+            <tr>
+
+              <td colspan="5"
+                class="empty">
+
+                No Transactions
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CONFIG -->
+  <script src="js/config.js"></script>
+
+  <!-- WALLET JS -->
+  <script src="js/wallet.js"></script>
+
+</body>
+
+</html>

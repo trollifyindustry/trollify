@@ -1,0 +1,267 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  font-family:'Poppins',sans-serif;
+
+  min-height:100vh;
+
+  background:
+  linear-gradient(
+    135deg,
+    #ffffff,
+    #fff7e8
+  );
+
+  padding:20px;
+
+  color:#222;
+
+}
+
+.container{
+
+  max-width:1300px;
+
+  margin:auto;
+
+}
+
+.glass{
+
+  background:
+  rgba(255,255,255,0.7);
+
+  backdrop-filter:
+  blur(12px);
+
+  border:
+  1px solid rgba(255,255,255,0.4);
+
+  border-radius:25px;
+
+  padding:25px;
+
+  box-shadow:
+  0 10px 40px
+  rgba(0,0,0,0.08);
+
+  margin-bottom:25px;
+
+}
+
+.topbar{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:
+  space-between;
+
+}
+
+.topbar h2{
+
+  font-size:30px;
+
+  font-weight:700;
+
+  color:#ff7b00;
+
+}
+
+button{
+
+  border:none;
+
+  padding:14px 30px;
+
+  border-radius:999px;
+
+  cursor:pointer;
+
+  background:
+  linear-gradient(
+    135deg,
+    #ff7b00,
+    #ffb347
+  );
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:600;
+
+  transition:.3s;
+
+}
+
+button:hover{
+
+  transform:
+  scale(1.05);
+
+}
+
+.card h3{
+
+  margin-bottom:15px;
+
+}
+
+input{
+
+  width:100%;
+
+  padding:16px;
+
+  border:none;
+
+  outline:none;
+
+  border-radius:15px;
+
+  background:
+  rgba(255,255,255,0.9);
+
+  font-size:15px;
+
+}
+
+.token-card{
+
+  text-align:center;
+
+}
+
+.token-card h1{
+
+  font-size:70px;
+
+  color:#ff7b00;
+
+}
+
+.token-card p{
+
+  font-size:18px;
+
+  margin-top:10px;
+
+}
+
+.plans{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(250px,1fr));
+
+  gap:25px;
+
+}
+
+.plan{
+
+  text-align:center;
+
+  transition:.3s;
+
+}
+
+.plan:hover{
+
+  transform:
+  translateY(-5px);
+
+}
+
+.plan h2{
+
+  font-size:45px;
+
+  color:#ff7b00;
+
+}
+
+.plan p{
+
+  margin:
+  15px 0;
+
+  font-size:18px;
+
+}
+
+.history h3{
+
+  margin-bottom:20px;
+
+}
+
+.table-wrapper{
+
+  overflow-x:auto;
+
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:
+  collapse;
+
+}
+
+th,
+td{
+
+  padding:15px;
+
+  text-align:left;
+
+  border-bottom:
+  1px solid #eee;
+
+}
+
+th{
+
+  color:#ff7b00;
+
+}
+
+.empty{
+
+  text-align:center;
+
+  padding:30px;
+
+  color:#888;
+
+}
+
+@media(max-width:768px){
+
+  .topbar{
+
+    flex-direction:column;
+
+    gap:15px;
+
+  }
+
+  .token-card h1{
+
+    font-size:50px;
+
+  }
+
+}
